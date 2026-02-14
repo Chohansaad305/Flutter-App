@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_firstproject/myApp/application.dart';
 // import 'package:flutter_firstproject/myApp/MyApplicationSecondPage.dart';
@@ -54,8 +55,60 @@ class MyApp extends StatelessWidget {
       // home: UserInputWidget(),
       // home: SimpleDailogandAlertdailog(),
       // home: MyHomePageState(),
-      home: MyApplication(),
       // home: MyApplicationSecondPage(),
+      home: SplashScreen(),
+    );
+  }
+}
+
+// ====== SPLASH SCREEN ======
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Timer(Duration(seconds: 5), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const MyApplication()),
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/SplashImage.png'),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 430,
+            left: 110,
+            child: Text(
+              'My Burger App',
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Colors.orange,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

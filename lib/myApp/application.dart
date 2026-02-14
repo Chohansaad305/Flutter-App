@@ -8,20 +8,39 @@ class MyApplication extends StatelessWidget {
     return Scaffold(
       // ========= APP BAR =========
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+          children: [
             Text(
               'Deliver to',
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
             ),
             Row(
               children: [
-                Icon(Icons.location_on, size: 16),
+                Icon(Icons.location_on, size: 16, color: Colors.orange),
                 Text(
                   'My Home, Kabul',
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                 ),
+                // PopupMenuButton(
+                //   icon: const Icon(Icons.keyboard_arrow_down),
+                //   onSelected: (value) {},
+                //   itemBuilder: (BuildContext context) => [
+                //     const PopupMenuItem(
+                //       value: 'home',
+                //       child: Text('My Home, Kabul'),
+                //     ),
+                //     const PopupMenuItem(
+                //       value: 'office',
+                //       child: Text('My Office, Kabul'),
+                //     ),
+                //     const PopupMenuItem(
+                //       value: 'other',
+                //       child: Text('Other Location'),
+                //     ),
+                //   ],
+                // ),
               ],
             ),
           ],
@@ -32,7 +51,6 @@ class MyApplication extends StatelessWidget {
             child: Icon(Icons.notifications_none),
           ),
         ],
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
       ),
       // ========= APP BAR END =========
 
@@ -75,14 +93,16 @@ class MyApplication extends StatelessWidget {
                 ],
               ),
 
-              TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search for food,Drinks, etc...',
-                  prefixIcon: Icon(Icons.search, size: 26),
-                  suffixIcon: Icon(Icons.filter_list, size: 26, weight: 100),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide.none,
+              Card(
+                child: TextField(
+                  decoration: InputDecoration(
+                    hintText: 'Search for food,Drinks, etc...',
+                    prefixIcon: Icon(Icons.search, size: 26),
+                    suffixIcon: Icon(Icons.filter_list, size: 26, weight: 100),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide.none,
+                    ),
                   ),
                 ),
               ),
@@ -94,7 +114,7 @@ class MyApplication extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    Container(
+                    SizedBox(
                       child: SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Row(
@@ -183,16 +203,17 @@ class MyApplication extends StatelessWidget {
 
       // ========= BOTTOM NAVIGATION BAR =========
       bottomNavigationBar: BottomNavigationBar(
-        items: [
+        currentIndex: 0,
+        selectedItemColor: Colors.orange,
+        unselectedItemColor: Colors.grey,
+        items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.emoji_emotions, color: Colors.grey),
+            icon: Icon(Icons.emoji_emotions),
             label: 'Home',
-            activeIcon: Icon(Icons.emoji_emotions, color: Colors.orange),
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_bag_outlined),
             label: 'My Orders',
-            activeIcon: Icon(Icons.shopping_bag, color: Colors.orange),
           ),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
@@ -238,54 +259,49 @@ class FoodCardHorizontal extends StatelessWidget {
                     ),
                   ),
 
-                  Padding(
-                    padding: const EdgeInsets.all(25),
-                    child: Positioned(
-                      top: 12,
-                      left: 12,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.40,
-                            child: Text(
-                              textHeading,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Text(
-                            secondHeading,
+                  Positioned(
+                    top: 25,
+                    left: 25,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.40,
+                          child: Text(
+                            textHeading,
                             style: TextStyle(
-                              color: Colors.grey,
-                              fontSize: 12,
+                              color: Colors.white,
+                              fontSize: 20,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 20),
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.orange,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                              ),
-                              child: Text(
-                                'Order Now',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
+                        ),
+                        Text(
+                          secondHeading,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.orange,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
                             ),
                           ),
-                        ],
-                      ),
+                          child: Text(
+                            'Order Now',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -311,30 +327,30 @@ class IconsScrollDirection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(30),
-            color: Colors.orange,
-          ),
-          child: Icon(
-            icons,
-            size: 20,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(5),
+        child: Row(
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
+                color: Colors.orange,
+              ),
+              child: Icon(icons, size: 23, color: Colors.white),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                lable,
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              ),
+            ),
+          ],
         ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            lable,
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }
@@ -342,7 +358,7 @@ class IconsScrollDirection extends StatelessWidget {
 
 // ====== FOOD CARD TOP HORIZONTAL2 CLASS ======
 class FoodCardHorizontal2 extends StatelessWidget {
-  final cardImages;
+  final String cardImages;
   final String? cardName;
   final String? starRating;
   final String? deliveryTime;
@@ -363,7 +379,6 @@ class FoodCardHorizontal2 extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(padding: const EdgeInsets.all(8.0)),
           Stack(
             children: [
               // IMAGE
@@ -440,7 +455,7 @@ class FoodCardHorizontal2 extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          Icon(Icons.star, color: Colors.amber, size: 18),
+                          Icon(Icons.star_half, color: Colors.amber, size: 18),
                           SizedBox(width: 4),
                           Text(starRating ?? ''),
                         ],
