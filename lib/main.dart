@@ -73,7 +73,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 5), () {
+    Timer(Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const MyApplication()),
@@ -84,6 +84,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.orange,
       body: Stack(
         children: [
           Container(
@@ -91,19 +92,8 @@ class _SplashScreenState extends State<SplashScreen> {
             height: double.infinity,
             decoration: const BoxDecoration(
               image: DecorationImage(
+                fit: BoxFit.none,
                 image: AssetImage('assets/images/SplashImage.png'),
-              ),
-            ),
-          ),
-          Positioned(
-            top: 430,
-            left: 110,
-            child: Text(
-              'My Burger App',
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                color: Colors.orange,
               ),
             ),
           ),
@@ -112,3 +102,5 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
+
+// ====== SPLASH SCREEN End ======

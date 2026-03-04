@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_firstproject/components/burger.dart';
+import 'package:flutter_firstproject/myApp/my_order.dart';
+import 'package:flutter_firstproject/myApp/profile.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 
 class MyApplication extends StatelessWidget {
   const MyApplication({super.key});
@@ -45,10 +49,62 @@ class MyApplication extends StatelessWidget {
             ),
           ],
         ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.all(10),
-            child: Icon(Icons.notifications_none),
+        actions: [
+          Builder(
+            builder: (context) => IconButton(
+              icon: Stack(
+                children: [
+                  Icon(Icons.notifications_none, size: 28),
+
+                  Positioned(
+                    right: 0,
+                    top: 0,
+                    child: Container(
+                      width: 10,
+                      height: 10,
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              onPressed: () {
+                final RenderBox button =
+                    context.findRenderObject() as RenderBox;
+                final RenderBox overlay =
+                    Overlay.of(context).context.findRenderObject() as RenderBox;
+
+                showMenu(
+                  context: context,
+                  position: RelativeRect.fromRect(
+                    Rect.fromPoints(
+                      button.localToGlobal(Offset.zero, ancestor: overlay),
+                      button.localToGlobal(
+                        button.size.bottomRight(Offset.zero),
+                        ancestor: overlay,
+                      ),
+                    ),
+                    Offset.zero & overlay.size,
+                  ),
+                  items: [
+                    PopupMenuItem(
+                      child: NotificationTile(
+                        title: "New Order Received",
+                        subtitle: "Your order #123 has been placed",
+                      ),
+                    ),
+                    PopupMenuItem(
+                      child: NotificationTile(
+                        title: "New Message",
+                        subtitle: "You received a new message",
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
         ],
       ),
@@ -93,6 +149,7 @@ class MyApplication extends StatelessWidget {
                 ],
               ),
 
+              // ================= Search Bar =================
               Card(
                 child: TextField(
                   decoration: InputDecoration(
@@ -106,7 +163,9 @@ class MyApplication extends StatelessWidget {
                   ),
                 ),
               ),
+              // ================= Search Bar End =================
 
+              // ====== ICONS SCROLL ======
               Padding(
                 padding: const EdgeInsets.symmetric(
                   vertical: 15,
@@ -122,26 +181,31 @@ class MyApplication extends StatelessWidget {
                             IconsScrollDirection(
                               icons: Icons.local_cafe_outlined,
                               lable: 'Burgers',
+                              iconPageLink: Burger(),
                             ),
                             SizedBox(width: 10),
                             IconsScrollDirection(
                               icons: Icons.local_pizza_outlined,
                               lable: 'Pizza',
+                              iconPageLink: MyOrder(),
                             ),
                             SizedBox(width: 10),
                             IconsScrollDirection(
                               icons: Icons.local_drink_outlined,
                               lable: 'Drinks',
+                              iconPageLink: MyOrder(),
                             ),
                             SizedBox(width: 10),
                             IconsScrollDirection(
                               icons: Icons.icecream_outlined,
                               lable: 'Ice Cream',
+                              iconPageLink: Profile(),
                             ),
                             SizedBox(width: 10),
                             IconsScrollDirection(
                               icons: Icons.cake_outlined,
                               lable: 'Cake',
+                              iconPageLink: MyOrder(),
                             ),
                           ],
                         ),
@@ -150,26 +214,49 @@ class MyApplication extends StatelessWidget {
                   ],
                 ),
               ),
+
+              // ====== ICONS SCROLL END ======
               SizedBox(height: 10),
+
+              // ====== FOOD CARD TOP HORIZONTAL ======
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Recent Deals",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Recent Deals 🔥",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Burger()),
+                          );
+                        },
+                        child: Text('View All', style: TextStyle(fontSize: 16)),
+                      ),
+                    ],
                   ),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
                         FoodCardHorizontal2(
+                          cardPageLink: MyOrder(),
                           discount: '20% OFF',
-                          cardImages: 'assets/images/burger1.png',
+                          cardImages: 'assets/images/burger.png',
                           cardName: "Chicken Burger",
                           starRating: '4.5',
                           deliveryTime: '10-20 min',
                         ),
                         FoodCardHorizontal2(
+                          cardPageLink: MyOrder(),
                           discount: '15% OFF',
                           cardImages: 'assets/images/burger.png',
                           cardName: "Veg Burger",
@@ -177,6 +264,7 @@ class MyApplication extends StatelessWidget {
                           deliveryTime: '10-20 min',
                         ),
                         FoodCardHorizontal2(
+                          cardPageLink: MyOrder(),
                           discount: '10% OFF',
                           cardImages: 'assets/images/burger2.png',
                           cardName: "Beef Burger",
@@ -184,6 +272,75 @@ class MyApplication extends StatelessWidget {
                           deliveryTime: '10-20 min',
                         ),
                         FoodCardHorizontal2(
+                          cardPageLink: MyOrder(),
+                          discount: '5% OFF',
+                          cardImages: 'assets/images/burger3.png',
+                          cardName: "Cheese Burger",
+                          starRating: '4.0',
+                          deliveryTime: '10-20 min',
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+
+              // ====== FOOD CARD TOP HORIZONTAL END ======
+              SizedBox(height: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Burger Deals 🍔",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => Burger()),
+                          );
+                        },
+                        child: Text('View All', style: TextStyle(fontSize: 16)),
+                      ),
+                    ],
+                  ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        FoodCardHorizontal2(
+                          cardPageLink: MyOrder(),
+                          discount: '20% OFF',
+                          cardImages: 'assets/images/burger1.png',
+                          cardName: "Chicken Burger",
+                          starRating: '4.5',
+                          deliveryTime: '10-20 min',
+                        ),
+                        FoodCardHorizontal2(
+                          cardPageLink: MyOrder(),
+                          discount: '15% OFF',
+                          cardImages: 'assets/images/burger.png',
+                          cardName: "Veg Burger",
+                          starRating: '4.2',
+                          deliveryTime: '10-20 min',
+                        ),
+                        FoodCardHorizontal2(
+                          cardPageLink: MyOrder(),
+                          discount: '10% OFF',
+                          cardImages: 'assets/images/burger2.png',
+                          cardName: "Beef Burger",
+                          starRating: '4.8',
+                          deliveryTime: '10-20 min',
+                        ),
+                        FoodCardHorizontal2(
+                          cardPageLink: MyOrder(),
                           discount: '5% OFF',
                           cardImages: 'assets/images/burger3.png',
                           cardName: "Cheese Burger",
@@ -202,26 +359,52 @@ class MyApplication extends StatelessWidget {
       // ========= BODY END =========
 
       // ========= BOTTOM NAVIGATION BAR =========
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
-        selectedItemColor: Colors.orange,
-        unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.emoji_emotions),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_bag_outlined),
-            label: 'My Orders',
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-        ],
-      ),
+      bottomNavigationBar: const BottomBar(selectedIndex: 0),
       // ========= BOTTOM NAVIGATION BAR END =========
     );
   }
 }
+
+// ====== NOTIFICATION TILE CLASS ======
+class NotificationTile extends StatelessWidget {
+  final String title;
+  final String subtitle;
+
+  const NotificationTile({
+    super.key,
+    required this.title,
+    required this.subtitle,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        CircleAvatar(
+          backgroundColor: Colors.orange,
+          child: Icon(Icons.notifications, color: Colors.white),
+        ),
+        SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+              Text(
+                subtitle,
+                style: TextStyle(fontSize: 12, color: Colors.grey),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+// ====== NOTIFICATION TILE CLASS END ======
 
 // ====== FOOD CARD TOP HORIZONTAL CLASS ======
 class FoodCardHorizontal extends StatelessWidget {
@@ -286,7 +469,14 @@ class FoodCardHorizontal extends StatelessWidget {
                         ),
                         SizedBox(height: 20),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const MyOrder(),
+                              ),
+                            );
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.orange,
                             shape: RoundedRectangleBorder(
@@ -319,36 +509,44 @@ class FoodCardHorizontal extends StatelessWidget {
 class IconsScrollDirection extends StatelessWidget {
   final String lable;
   final IconData icons;
+  final Widget iconPageLink;
   const IconsScrollDirection({
     super.key,
     required this.icons,
     required this.lable,
+    required this.iconPageLink,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(5),
-        child: Row(
-          children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: Colors.orange,
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => iconPageLink),
+      ),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(5),
+          child: Row(
+            children: [
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  color: Colors.orange,
+                ),
+                child: Icon(icons, size: 23, color: Colors.white),
               ),
-              child: Icon(icons, size: 23, color: Colors.white),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                lable,
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  lable,
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -363,6 +561,7 @@ class FoodCardHorizontal2 extends StatelessWidget {
   final String? starRating;
   final String? deliveryTime;
   final String? discount;
+  final Widget cardPageLink;
 
   const FoodCardHorizontal2({
     super.key,
@@ -371,115 +570,168 @@ class FoodCardHorizontal2 extends StatelessWidget {
     this.deliveryTime,
     this.starRating,
     this.discount,
+    required this.cardPageLink,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            children: [
-              // IMAGE
-              Container(
-                width: MediaQuery.of(context).size.width * 0.70,
-                height: 180,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                  image: DecorationImage(
-                    image: AssetImage(cardImages),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-
-              // TEXT (top left)
-              Positioned(
-                top: 12,
-                left: 12,
-                child: Text(
-                  discount ?? '',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    backgroundColor: Colors.black54,
-                  ),
-                ),
-              ),
-
-              // BUTTON (bottom right)
-              Positioned(
-                bottom: 12,
-                right: 12,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => cardPageLink),
+        );
+      },
+      child: Card(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
+              children: [
+                // IMAGE
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.70,
+                  height: 180,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20),
+                    ),
+                    image: DecorationImage(
+                      image: AssetImage(cardImages),
+                      fit: BoxFit.cover,
                     ),
                   ),
+                ),
+
+                // TEXT (top left)
+                Positioned(
+                  top: 12,
+                  left: 12,
                   child: Text(
-                    'Order Now',
+                    discount ?? '',
                     style: TextStyle(
                       color: Colors.white,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
+                      backgroundColor: Colors.black54,
                     ),
                   ),
-                ),
-              ),
-            ],
-          ),
-
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.65,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        cardName ?? '',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Icon(Icons.star_half, color: Colors.amber, size: 18),
-                          SizedBox(width: 4),
-                          Text(starRating ?? ''),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 6),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.watch_later,
-                      color: const Color.fromARGB(255, 255, 215, 95),
-                    ),
-                    Text('$deliveryTime delivery'),
-                  ],
                 ),
               ],
             ),
-          ),
+
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.65,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          cardName ?? '',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.star_half,
+                              color: Colors.amber,
+                              size: 18,
+                            ),
+                            SizedBox(width: 4),
+                            Text(starRating ?? ''),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 6),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.watch_later,
+                        color: const Color.fromARGB(255, 255, 215, 95),
+                      ),
+                      Text('$deliveryTime delivery'),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+// ====== FOOD CARD TOP HORIZONTAL2 CLASS END ======
+
+// ========= BOTTOM NAVIGATION BAR =========
+class BottomBar extends StatelessWidget {
+  final int selectedIndex;
+
+  const BottomBar({super.key, required this.selectedIndex});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: GNav(
+        selectedIndex: selectedIndex,
+        rippleColor: Colors.grey.shade300,
+        hoverColor: Colors.grey.shade200,
+        haptic: true,
+        tabBorderRadius: 15,
+        duration: const Duration(milliseconds: 400),
+        gap: 8,
+        color: Colors.black,
+        activeColor: Colors.black,
+        iconSize: 26,
+        // tabBackgroundColor: Colors.black,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+
+        onTabChange: (index) {
+          if (index == selectedIndex) return;
+
+          switch (index) {
+            case 0:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => MyApplication()),
+              );
+              break;
+
+            case 1:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => MyOrder()),
+              );
+              break;
+
+            case 2:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => Profile()),
+              );
+              break;
+          }
+        },
+
+        tabs: const [
+          GButton(icon: Icons.home_outlined, text: 'Home'),
+          GButton(icon: Icons.shopping_bag_outlined, text: 'My Order'),
+          GButton(icon: Icons.person_outlined, text: 'Profile'),
         ],
       ),
     );
   }
 }
 
-// ====== FOOD CARD TOP HORIZONTAL2 CLASS END ======
+// ========= BOTTOM NAVIGATION BAR END =========
